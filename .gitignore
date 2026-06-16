@@ -1,0 +1,26 @@
+# Configuración local del editor
+# launch.json contiene rutas absolutas de esta máquina, no debe versionarse
+.vscode/
+
+# Artefactos de OneDrive / Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+
+# Dependencias y builds (si más adelante se incorpora tooling)
+node_modules/
+dist/
+build/
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
