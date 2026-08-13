@@ -25,19 +25,30 @@ const setHeaderState = () => {
 setHeaderState();
 window.addEventListener("scroll", setHeaderState, { passive: true });
 
+// El texto para lector de pantalla quedaba fijo en "Abrir menú" incluso con el
+// menú abierto, así que anunciaba la acción contraria a la disponible.
+const setMenuState = (isOpen) => {
+  navToggle.setAttribute("aria-expanded", String(isOpen));
+
+  const label = navToggle.querySelector(".sr-only");
+
+  if (label) {
+    label.textContent = isOpen ? "Cerrar menú" : "Abrir menú";
+  }
+};
+
 const closeMenu = () => {
   if (!navToggle || !navMenu) {
     return;
   }
 
   navMenu.classList.remove("is-open");
-  navToggle.setAttribute("aria-expanded", "false");
+  setMenuState(false);
 };
 
 if (navToggle && navMenu) {
   navToggle.addEventListener("click", () => {
-    const isOpen = navMenu.classList.toggle("is-open");
-    navToggle.setAttribute("aria-expanded", String(isOpen));
+    setMenuState(navMenu.classList.toggle("is-open"));
   });
 
   navMenu.addEventListener("click", (event) => {
@@ -55,19 +66,50 @@ if (navToggle && navMenu) {
 
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener("click", (event) => {
-    const targetId = link.getAttribute("href");
+    const href = link.getAttribute("href");
 
-    if (!targetId || targetId === "#") {
+    if (!href || href === "#") {
       return;
     }
 
-    const target = document.querySelector(targetId);
+    // getElementById en vez de querySelector: un hash con caracteres que no
+    // son válidos como selector CSS haría throw y rompería el listener.
+    const target = document.getElementById(href.slice(1));
 
-    if (target) {
-      event.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!target) {
+      return;
     }
+
+    event.preventDefault();
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+
+    // preventDefault también cancelaba la actualización del hash: no había
+    // deep links (#proyectos no era compartible) ni funcionaba el botón Atrás.
+    history.pushState(null, "", href);
+
+    // scrollIntoView mueve la vista pero no el foco. Sin esto, quien navega
+    // por teclado sigue tabulando desde el header y el skip link no sirve.
+    target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true });
   });
+});
+
+// Al usar Atrás/Adelante el navegador no dispara el click, así que hay que
+// llevar la vista al destino a mano.
+window.addEventListener("popstate", () => {
+  const target = window.location.hash
+    ? document.getElementById(window.location.hash.slice(1))
+    : null;
+
+  if (target) {
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  }
 });
 
 const setActiveNavLink = (id) => {

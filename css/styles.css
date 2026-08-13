@@ -28,8 +28,15 @@
      temas, por eso se define una sola vez acá y no se redefine en el claro. */
   --color-on-brand: #FFFFFF;
 
+  /* Tags sobre fondo de acento. En claro el acento no da 4.5:1 con texto
+     pequeño, por eso el par tiene tokens propios y no usa --color-accent. */
+  --color-tag-bg: var(--color-accent);
+  --color-tag-text: var(--color-bg);
+
   --color-button-text: #FFFFFF;
-  --color-focus-ring: rgba(49, 246, 200, 0.32);
+  /* Sólido, no translúcido: el anillo de foco necesita 3:1 propios, y en verde
+     se confundía con el estado de éxito sobre un campo inválido. */
+  --color-focus-ring: #9DEBFF;
   --color-overlay-start: rgba(11, 16, 24, 0.96);
   --color-overlay-end: rgba(36, 91, 255, 0.58);
   --color-text-soft: rgba(242, 251, 255, 0.86);
@@ -144,6 +151,34 @@ button {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Foco visible y consistente en todo lo interactivo. Antes se dependía del
+   anillo por defecto del navegador, distinto en cada uno. */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Primer elemento tabulable: permite saltear el header repetido en cada carga.
+   Fuera de pantalla hasta recibir foco. */
+.skip-link {
+  position: fixed;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 100;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-button-text);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-250%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 .site-header {
@@ -541,8 +576,8 @@ h3 {
   height: 26px;
   place-items: center;
   border-radius: var(--radius-sm);
-  background: var(--color-accent);
-  color: var(--color-bg);
+  background: var(--color-tag-bg);
+  color: var(--color-tag-text);
   font-family: var(--font-heading);
   font-size: 0.75rem;
 }
@@ -722,8 +757,8 @@ progress::-moz-progress-bar {
   align-items: center;
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-sm);
-  background: var(--color-accent);
-  color: var(--color-bg);
+  background: var(--color-tag-bg);
+  color: var(--color-tag-text);
   font-size: 0.78rem;
   font-weight: 800;
 }
@@ -1049,28 +1084,31 @@ progress::-moz-progress-bar {
    Pegá este bloque al final de styles.css
    ─────────────────────────────────────────────────────────────────────────── */
 
-.animate-fade-up,
-.animate-fade-in,
-.animate-slide-left,
-.animate-slide-right {
+/* Todo el estado inicial va bajo .js, que agrega el script inline del <head>.
+   Sin JavaScript nadie agrega .is-visible, así que sin este scope la página
+   quedaría casi en blanco: es contenido oculto que nunca se revelaría. */
+.js .animate-fade-up,
+.js .animate-fade-in,
+.js .animate-slide-left,
+.js .animate-slide-right {
   opacity: 0;
   transition: opacity 560ms ease, transform 560ms ease;
   transition-delay: var(--anim-delay, 0ms);
 }
 
-.animate-fade-up {
+.js .animate-fade-up {
   transform: translateY(28px);
 }
 
-.animate-fade-in {
+.js .animate-fade-in {
   transform: scale(0.97);
 }
 
-.animate-slide-left {
+.js .animate-slide-left {
   transform: translateX(-32px);
 }
 
-.animate-slide-right {
+.js .animate-slide-right {
   transform: translateX(32px);
 }
 
@@ -1083,12 +1121,14 @@ progress::-moz-progress-bar {
   transform: none;
 }
 
-/* Sin animaciones si el usuario lo prefiere */
+/* Sin animaciones si el usuario lo prefiere.
+   Lleva .js para igualar la especificidad del estado inicial de arriba: sin el
+   prefijo, (0,1,0) perdería contra (0,2,0) y el contenido quedaría invisible. */
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up,
-  .animate-fade-in,
-  .animate-slide-left,
-  .animate-slide-right {
+  .js .animate-fade-up,
+  .js .animate-fade-in,
+  .js .animate-slide-left,
+  .js .animate-slide-right {
     opacity: 1;
     transform: none;
     transition: none;
@@ -1119,8 +1159,12 @@ progress::-moz-progress-bar {
   --color-danger: #C0261F;
   --color-success: #0E9279;
 
+  /* Verde más oscuro y texto blanco: el acento claro daba 3.62:1 */
+  --color-tag-bg: #0A6B58;
+  --color-tag-text: #FFFFFF;
+
   --color-button-text: #FFFFFF;
-  --color-focus-ring: rgba(14, 146, 121, 0.28);
+  --color-focus-ring: #245BFF;
   --color-overlay-start: rgba(244, 247, 255, 0.96);
   --color-overlay-end: rgba(36, 91, 255, 0.12);
   --color-text-soft: rgba(11, 16, 24, 0.80);

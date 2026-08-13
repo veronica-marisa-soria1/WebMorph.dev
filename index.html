@@ -37,10 +37,32 @@
   <meta name="theme-color" content="#0B1018" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#F4F7FF" media="(prefers-color-scheme: light)">
 
+  <!-- Bloqueante y a propósito: corre antes del primer pintado.
+       1. Marca .js en <html>. El CSS oculta los elementos animados solo bajo
+          .js, así que sin JavaScript la página se ve completa en vez de vacía.
+       2. Aplica el tema guardado antes de pintar. Con main.js (defer) el tema
+          se aplicaba después del parseo y quien tuviera modo claro veía un
+          destello oscuro. -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add("js");
+      try {
+        var saved = localStorage.getItem("wm-theme");
+        var light = window.matchMedia("(prefers-color-scheme: light)").matches;
+        root.setAttribute("data-theme", saved || (light ? "light" : "dark"));
+      } catch (e) {
+        root.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+
   <link rel="stylesheet" href="css/styles.css">
   <script src="js/main.js" defer></script>
 </head>
 <body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
   <header class="site-header" id="inicio">
     <nav class="nav" aria-label="Navegación principal">
       <a class="brand" href="#inicio" aria-label="Web Morph, ir al inicio">
@@ -65,13 +87,14 @@
 
       <ul class="nav-menu" id="nav-menu">
         <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#habilidades">Habilidades</a></li>
         <li><a href="#proyectos">Proyectos</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
+  <main id="contenido">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-content animate-fade-up">
         <p class="eyebrow">Desarrolladora de Software &middot; Web Morph</p>
