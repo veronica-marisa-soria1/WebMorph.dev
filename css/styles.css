@@ -7,7 +7,6 @@
   --color-primary-dark: #1737A6;
   --color-primary-light: #9DEBFF;
   --color-accent: #31F6C8;
-  --color-accent-dark: #0E9279;
 
   /* Superficies - derivadas del tono del logo */
   --color-bg: #0B1018;
@@ -38,8 +37,6 @@
   /* Sólido, no translúcido: el anillo de foco necesita 3:1 propios, y en verde
      se confundía con el estado de éxito sobre un campo inválido. */
   --color-focus-ring: #9DEBFF;
-  --color-overlay-start: rgba(11, 16, 24, 0.96);
-  --color-overlay-end: rgba(36, 91, 255, 0.58);
   --color-text-soft: rgba(242, 251, 255, 0.86);
   --color-glass: rgba(20, 27, 42, 0.76);
   --color-glass-border: rgba(157, 235, 255, 0.34);
@@ -79,10 +76,6 @@
      antes repetían un 92px hardcodeado que no coincidía con el real. */
   --header-height: 76px;
 
-  --color-ink: var(--color-text);
-  --color-background: var(--color-bg);
-  --color-muted: var(--color-text-muted);
-  --color-line: var(--color-border);
   --shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
   --max-width: 1120px;
 }
@@ -108,7 +101,7 @@ html {
 body {
   min-height: 100svh;
   font-family: var(--font-body);
-  color: var(--color-ink);
+  color: var(--color-text);
   background: var(--color-bg);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -213,7 +206,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
 }
 
 .brand {
@@ -500,7 +493,7 @@ h3 {
 .section > p {
   max-width: 780px;
   margin: 0;
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   font-size: 1.08rem;
 }
 
@@ -625,7 +618,7 @@ h3 {
 
 .skills-list li,
 .project-card {
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
 }
@@ -638,57 +631,6 @@ h3 {
 .skills-list li {
   padding: 18px;
   font-weight: 700;
-}
-
-.badge,
-.tag,
-.project-tag {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  min-height: 28px;
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-sm);
-  background: var(--color-accent);
-  color: var(--color-bg);
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-progress {
-  width: 100%;
-  height: var(--space-3);
-  overflow: hidden;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: var(--color-surface-hover);
-}
-
-progress::-webkit-progress-bar {
-  background: var(--color-surface-hover);
-}
-
-progress::-webkit-progress-value {
-  background: var(--color-primary);
-}
-
-progress::-moz-progress-bar {
-  background: var(--color-primary);
-}
-
-.progress-bar {
-  width: 100%;
-  height: var(--space-3);
-  overflow: hidden;
-  border-radius: var(--radius-sm);
-  background: var(--color-surface-hover);
-}
-
-.progress-bar span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--color-primary);
 }
 
 .project-grid {
@@ -706,7 +648,10 @@ progress::-moz-progress-bar {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+  /* opacity va acá y no en una segunda regla al final del archivo: la anima el
+     filtro de proyectos al ocultar tarjetas. */
+  transition: transform 180ms ease, box-shadow 180ms ease,
+    border-color 180ms ease, background 180ms ease, opacity 280ms ease;
 }
 
 .project-card:hover,
@@ -750,7 +695,7 @@ progress::-moz-progress-bar {
 
 .project-card p {
   margin: 0 0 var(--space-5);
-  color: var(--color-muted);
+  color: var(--color-text-muted);
 }
 
 .project-tags {
@@ -878,7 +823,7 @@ progress::-moz-progress-bar {
   display: grid;
   gap: var(--space-4);
   padding: 28px;
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
   box-shadow: var(--shadow-card);
@@ -897,11 +842,11 @@ progress::-moz-progress-bar {
 .contact-form textarea {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   font: inherit;
-  color: var(--color-ink);
-  background: var(--color-background);
+  color: var(--color-text);
+  background: var(--color-bg);
 }
 
 .contact-form input:focus,
@@ -1034,7 +979,7 @@ progress::-moz-progress-bar {
   .nav-menu a {
     display: block;
     padding: 12px;
-    color: var(--color-ink);
+    color: var(--color-text);
   }
 
   .hero,
@@ -1155,7 +1100,6 @@ progress::-moz-progress-bar {
   --color-primary-dark: #1737A6;
   --color-primary-light: #1737A6;
   --color-accent: #0E9279;
-  --color-accent-dark: #0a6b58;
 
   --color-bg: #F4F7FF;
   --color-surface: #FFFFFF;
@@ -1176,18 +1120,12 @@ progress::-moz-progress-bar {
 
   --color-button-text: #FFFFFF;
   --color-focus-ring: #245BFF;
-  --color-overlay-start: rgba(244, 247, 255, 0.96);
-  --color-overlay-end: rgba(36, 91, 255, 0.12);
   --color-text-soft: rgba(11, 16, 24, 0.80);
   --color-glass: rgba(255, 255, 255, 0.85);
   --color-glass-border: rgba(36, 91, 255, 0.22);
   --color-glass-hover: rgba(36, 91, 255, 0.07);
   --shadow-card: 0 4px 20px rgba(36, 91, 255, 0.10);
 
-  --color-ink: var(--color-text);
-  --color-background: var(--color-bg);
-  --color-muted: var(--color-text-muted);
-  --color-line: var(--color-border);
   --shadow: 0 8px 32px rgba(36, 91, 255, 0.12);
 }
 
@@ -1246,11 +1184,6 @@ body,
 /* En modo claro: mostrar sol, ocultar luna */
 [data-theme="light"] .theme-toggle .icon-sun  { display: block; }
 [data-theme="light"] .theme-toggle .icon-moon { display: none; }
-
-/* Ajuste del nav para que el toggle quede bien posicionado */
-.nav {
-  gap: 16px;
-}
 
 /* En mobile: el toggle va antes del hamburguesa */
 @media (max-width: 768px) {
@@ -1345,15 +1278,6 @@ body,
 }
 
 /* Animación de las tarjetas al filtrar */
-.project-card {
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    border-color 180ms ease,
-    background 180ms ease,
-    opacity 280ms ease;
-}
-
 .project-card.is-hidden {
   opacity: 0;
   transform: scale(0.96);
