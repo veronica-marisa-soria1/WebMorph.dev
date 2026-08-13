@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap");
+/* Las fuentes se cargan desde el <head> de index.html, no con @import:
+   un @import acá bloquea el render y encadena las peticiones en serie. */
 
 :root {
   /* Colores base de la marca Web Morph */
@@ -73,6 +74,11 @@
   --radius-md: 8px;
   --radius-lg: 16px;
 
+  /* Alto del header sticky. Medido: 44px de contenido + 16px de padding
+     arriba y abajo. Se usa en scroll-padding-top y en el alto del hero, que
+     antes repetían un 92px hardcodeado que no coincidía con el real. */
+  --header-height: 76px;
+
   --color-ink: var(--color-text);
   --color-background: var(--color-bg);
   --color-muted: var(--color-text-muted);
@@ -93,12 +99,14 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 92px;
+  /* El header es sticky: sin este padding las secciones quedan tapadas al
+     navegar por anclas. Se deriva de --header-height en vez de repetir 92px. */
+  scroll-padding-top: calc(var(--header-height) + var(--space-4));
   text-size-adjust: 100%;
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100svh;
   font-family: var(--font-body);
   color: var(--color-ink);
   background: var(--color-bg);
@@ -313,7 +321,10 @@ button {
 
 .hero {
   width: 100%;
-  min-height: calc(100vh - 92px);
+  /* svh y no vh: en móviles vh usa la altura con la barra de URL retraída, así
+     que al cargar el hero queda más alto que la pantalla y la página "salta"
+     cuando la barra aparece o desaparece. svh usa la altura estable. */
+  min-height: calc(100svh - var(--header-height));
   margin: 0 auto;
   padding: clamp(72px, 10vw, 128px) max(16px, calc((100% - var(--max-width)) / 2));
   display: grid;

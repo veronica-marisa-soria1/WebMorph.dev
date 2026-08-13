@@ -57,6 +57,17 @@
     })();
   </script>
 
+  <!-- Las fuentes se cargan acá y no con @import dentro del CSS: el @import
+       encadenaba HTML -> styles.css -> CSS de Google -> archivos de fuente, todo
+       en serie. Desde el <head> el navegador las descubre en paralelo.
+       Se piden solo los pesos que el CSS usa (Inter 400/600/700/800, JetBrains
+       Mono 700/800). Eso no reduce los archivos descargados —Google sirve
+       fuentes variables partidas por unicode-range— pero sí el CSS: 40 bloques
+       @font-face en lugar de 59. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap">
+
   <link rel="stylesheet" href="css/styles.css">
   <script src="js/main.js" defer></script>
 </head>
@@ -116,13 +127,14 @@
       </div>
 
       <div class="hero-media animate-fade-in" aria-label="Foto de perfil">
-        <img class="profile-image" src="assets/img/perfil2.jpg" alt="Retrato de Verónica, desarrolladora de software" width="320" height="320">
+        <!-- Candidata a LCP: se descarga con prioridad y nunca en lazy -->
+        <img class="profile-image" src="assets/img/perfil2.jpg" alt="Retrato de Verónica, desarrolladora de software" width="320" height="320" fetchpriority="high" decoding="async">
       </div>
     </section>
 
     <section class="section about-section" id="sobre-mi" aria-labelledby="about-title">
       <div class="about-media animate-slide-left">
-        <img src="assets/img/perfil.jpg" alt="Verónica, estudiante de desarrollo de software en Chaco, Argentina" width="420" height="420">
+        <img src="assets/img/perfil.jpg" alt="Verónica, estudiante de desarrollo de software en Chaco, Argentina" width="420" height="420" loading="lazy" decoding="async">
       </div>
 
       <div class="about-content animate-slide-right">
