@@ -1,11 +1,11 @@
 # Web Morph — Portafolio personal
 
 Sitio web personal de Verónica, desarrolladora de software junior bajo la marca **Web Morph**.
-Construido con HTML5, CSS3 y JavaScript vanilla — sin frameworks, sin dependencias.
+Construido con HTML5, CSS3 y JavaScript vanilla — sin frameworks, sin dependencias, sin build.
 
 ## Demo
 
-🔗 `TODO: agregar link cuando esté publicado en GitHub Pages`
+🔗 https://veronica-marisa-soria1.github.io/WebMorph.dev/ — *pendiente de publicar (ver [Deploy](#deploy-en-github-pages))*
 
 ## Stack
 
@@ -17,11 +17,11 @@ Construido con HTML5, CSS3 y JavaScript vanilla — sin frameworks, sin dependen
 ## Funcionalidades
 
 - Navegación fija con detección de sección activa (IntersectionObserver)
-- Menú hamburguesa animado para mobile
+- Menú hamburguesa para mobile
 - Efecto typewriter en el hero
-- Toggle modo oscuro / claro (guarda preferencia en localStorage)
-- Animaciones de entrada al hacer scroll (respeta prefers-reduced-motion)
-- Filtro de proyectos por tecnología
+- Toggle modo oscuro / claro (guarda la preferencia en `localStorage`)
+- Animaciones de entrada al hacer scroll (respetan `prefers-reduced-motion`)
+- Filtro de proyectos por categoría, con estado vacío
 - Formulario de contacto con validación en tiempo real
 
 ## Estructura
@@ -31,59 +31,75 @@ Construido con HTML5, CSS3 y JavaScript vanilla — sin frameworks, sin dependen
 ├── index.html
 ├── robots.txt
 ├── sitemap.xml
+├── .gitignore
+├── .gitattributes
 ├── css/
 │   └── styles.css
 ├── js/
 │   └── main.js
 └── assets/
     └── img/
-        ├── web-morph-logo.svg
-        ├── perfil.jpg
-        ├── og-preview.jpg       ← imagen 1200×630 para redes sociales
-        ├── favicon-32.png
-        ├── favicon-16.png
-        └── apple-touch-icon.png
+        ├── web-morph-logo.svg      logo y favicon principal
+        ├── og-preview.jpg          1200×630, preview en redes
+        ├── favicon-32.png          32×32
+        ├── favicon-16.png          16×16
+        ├── apple-touch-icon.png    180×180, ícono en iOS
+        ├── perfil.jpg              foto de la sección "Sobre mí"
+        ├── perfil2.jpg             foto del hero
+        ├── perfil1.jpg             sin uso
+        └── hero-pattern.svg        sin uso
 ```
 
-## Imágenes pendientes
+## Desarrollo local
 
-Antes de publicar, agregar estas imágenes en `assets/img/`:
+No hay build ni dependencias. Para levantarlo alcanza con cualquier servidor estático:
 
-| Archivo | Tamaño | Uso |
-|---|---|---|
-| `og-preview.jpg` | 1200×630 px | Preview en LinkedIn / WhatsApp |
-| `web-morph-logo.svg` | SVG | Logo y favicon principal |
-| `favicon-32.png` | 32×32 px | Favicon PNG opcional |
-| `favicon-16.png` | 16×16 px | Favicon PNG opcional pequeño |
-| `apple-touch-icon.png` | 180×180 px | Ícono en iOS |
+```bash
+python -m http.server 8000
+```
+
+Abrir http://localhost:8000. Conviene usar un servidor en lugar de abrir el
+archivo directamente: con `file://` no funcionan correctamente las rutas ni el
+iframe del mapa.
+
+## Formulario de contacto
+
+Por defecto el formulario **no envía nada a un servidor**: abre el cliente de
+correo del visitante con el mensaje ya redactado.
+
+Para activar el envío en segundo plano, crear un formulario en
+[Formspree](https://formspree.io) o [Web3Forms](https://web3forms.com) y pegar
+la URL en la constante de `js/main.js`:
+
+```js
+const CONTACT_ENDPOINT = "https://formspree.io/f/TU-ID";
+```
+
+Con la constante cargada, el formulario hace `POST` con JSON y maneja los
+errores de red y las respuestas no-2xx. Sin ella, usa el fallback `mailto:`.
 
 ## Deploy en GitHub Pages
 
 ```bash
-# 1. Inicializar git (si no lo hiciste)
-git init
-git add .
-git commit -m "inicial: portafolio Web Morph"
-
-# 2. Crear repo en GitHub y subir
-git remote add origin https://github.com/TU-USUARIO/TU-REPO.git
 git push -u origin main
-
-# 3. Habilitar GitHub Pages
-# GitHub → Settings → Pages → Branch: main → / (root) → Save
 ```
 
-La URL quedará: `https://TU-USUARIO.github.io/TU-REPO`
+Después: **GitHub → Settings → Pages → Branch: `main` → `/ (root)` → Save**.
 
-## Pendientes antes de publicar
+La URL queda en `https://veronica-marisa-soria1.github.io/WebMorph.dev/`.
 
-- [ ] Reemplazar todos los `TODO-tu-url` en `head`, `robots.txt` y `sitemap.xml`
-- [ ] Agregar las imágenes de favicon y og-preview
-- [ ] Actualizar links reales de GitHub y LinkedIn en el HTML
-- [ ] Actualizar email en el link de contacto
-- [ ] Agregar `assets/cv.pdf` con el CV actualizado
+> Si más adelante se usa un dominio propio, hay que actualizar la URL en cuatro
+> lugares: `<link rel="canonical">` y las etiquetas `og:`/`twitter:` de
+> `index.html`, `robots.txt` y `sitemap.xml`.
+
+## Pendientes
+
+- [ ] Publicar en GitHub Pages
+- [ ] Conectar el formulario a un endpoint real (`CONTACT_ENDPOINT`)
+- [ ] Reemplazar los "Demo pendiente" / "Código pendiente" de los proyectos por links reales
+- [ ] Agregar `assets/cv.pdf` y enlazarlo desde el botón "Solicitar CV"
 - [ ] Actualizar `<lastmod>` en `sitemap.xml` tras cada cambio importante
 
 ## Desarrollado por
 
-Verónica · [Web Morph](https://TODO-tu-url.github.io) · Quitilipi-Chaco, Argentina
+Verónica · Web Morph · Quitilipi, Chaco, Argentina
