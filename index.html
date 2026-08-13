@@ -122,14 +122,20 @@
     </section>
 
     <section class="section" id="proyectos" aria-labelledby="projects-title">
+      <div class="section-heading animate-fade-up">
+        <p class="eyebrow">Proyectos</p>
+        <h2 id="projects-title">En qué estuve trabajando.</h2>
+      </div>
+
       <div class="project-filters" role="group" aria-label="Filtrar proyectos">
-  <button class="filter-btn is-active" data-filter="all" aria-pressed="true">Todos</button>
-  <button class="filter-btn" data-filter="django" aria-pressed="false">Python / Django</button>
-  <button class="filter-btn" data-filter="web" aria-pressed="false">Web</button>
-  <button class="filter-btn" data-filter="agritech" aria-pressed="false">AgriTech</button>
-</div>
+        <button class="filter-btn is-active" data-filter="all" aria-pressed="true">Todos</button>
+        <button class="filter-btn" data-filter="python" aria-pressed="false">Python / Django</button>
+        <button class="filter-btn" data-filter="web" aria-pressed="false">Web</button>
+        <button class="filter-btn" data-filter="agritech" aria-pressed="false">AgriTech</button>
+      </div>
+
       <div class="project-grid">
-        <article class="project-card animate-fade-up" data-tags="html css sql git web" style="--anim-delay: 240ms">
+        <article class="project-card animate-fade-up" data-tags="python django postgresql web" style="--anim-delay: 0ms">
           <div class="project-media" aria-hidden="true">
             <span>MH</span>
           </div>
@@ -173,7 +179,7 @@
           </div>
         </article>
 
-        <article class="project-card animate-fade-up" data-tags="html css sql git web" style="--anim-delay: 240ms">
+        <article class="project-card animate-fade-up" data-tags="web html css sql git" style="--anim-delay: 240ms">
           <div class="project-media" aria-hidden="true">
             <span>AC</span>
           </div>
@@ -195,6 +201,10 @@
           </div>
         </article>
       </div>
+
+      <p class="project-empty" id="project-empty" role="status" hidden>
+        Todavía no hay proyectos en esta categoría.
+      </p>
     </section>
 
     <section class="section contact-section" id="contacto" aria-labelledby="contact-title">

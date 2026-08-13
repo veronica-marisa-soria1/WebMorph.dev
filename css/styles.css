@@ -20,6 +20,14 @@
   /* Bordes */
   --color-border: rgba(36, 91, 255, 0.28);
 
+  /* Estados semánticos: error y éxito no deben pintarse con colores de marca */
+  --color-danger: #FF6B6B;
+  --color-success: #31F6C8;
+
+  /* Texto sobre superficies de marca saturadas (footer). Es blanco en ambos
+     temas, por eso se define una sola vez acá y no se redefine en el claro. */
+  --color-on-brand: #FFFFFF;
+
   --color-button-text: #FFFFFF;
   --color-focus-ring: rgba(49, 246, 200, 0.32);
   --color-overlay-start: rgba(11, 16, 24, 0.96);
@@ -858,17 +866,17 @@ progress::-moz-progress-bar {
 
 .contact-form input.is-invalid,
 .contact-form textarea.is-invalid {
-  border-color: var(--color-accent-dark);
+  border-color: var(--color-danger);
 }
 
 .contact-form input.is-valid,
 .contact-form textarea.is-valid {
-  border-color: var(--color-accent);
+  border-color: var(--color-success);
 }
 
 .field-error {
   min-height: 1.2em;
-  color: var(--color-primary-light);
+  color: var(--color-danger);
   font-size: 0.88rem;
   font-weight: 700;
 }
@@ -880,20 +888,31 @@ progress::-moz-progress-bar {
 }
 
 .form-status.is-success {
-  color: var(--color-accent);
+  color: var(--color-success);
 }
 
 .form-status.is-error {
-  color: var(--color-primary-light);
+  color: var(--color-danger);
 }
 
+.project-empty {
+  margin: var(--space-8) 0 0;
+  padding: var(--space-8);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* El footer conserva fondo de marca en ambos temas, así que su texto no puede
+   depender de --color-text: en modo claro quedaba casi negro sobre azul. */
 .site-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding: 28px max(16px, calc((100% - var(--max-width)) / 2));
-  color: var(--color-text);
+  color: var(--color-on-brand);
   background: var(--color-primary-dark);
 }
 
@@ -906,7 +925,7 @@ progress::-moz-progress-bar {
   align-items: center;
   gap: var(--space-2);
   flex: 0 0 auto;
-  color: var(--color-text);
+  color: var(--color-on-brand);
   font-family: var(--font-heading);
   text-decoration: none;
 }
@@ -948,7 +967,12 @@ progress::-moz-progress-bar {
     opacity: 0;
     pointer-events: none;
     transform: translateY(-8px);
-    transition: max-height 220ms ease, opacity 180ms ease, transform 180ms ease;
+    /* visibility, no solo opacity: sin esto los links del menú cerrado siguen
+       en el orden de tabulación y el foco desaparece en un panel invisible.
+       Se retrasa hasta que termina el fundido para no cortar la animación. */
+    visibility: hidden;
+    transition: max-height 220ms ease, opacity 180ms ease, transform 180ms ease,
+      visibility 0s linear 180ms;
   }
 
   .nav-menu.is-open {
@@ -956,6 +980,9 @@ progress::-moz-progress-bar {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
+    visibility: visible;
+    transition: max-height 220ms ease, opacity 180ms ease, transform 180ms ease,
+      visibility 0s;
   }
 
   .nav-menu a {
@@ -1087,6 +1114,10 @@ progress::-moz-progress-bar {
   --color-text-muted: #4A5568;
 
   --color-border: rgba(36, 91, 255, 0.18);
+
+  /* Variantes oscurecidas para que contrasten sobre superficies claras */
+  --color-danger: #C0261F;
+  --color-success: #0E9279;
 
   --color-button-text: #FFFFFF;
   --color-focus-ring: rgba(14, 146, 121, 0.28);

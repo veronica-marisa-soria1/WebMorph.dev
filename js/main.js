@@ -99,17 +99,17 @@ if ("IntersectionObserver" in window && observedSections.length) {
 }
 
 const validators = {
-  name: (value) => (value.trim() ? "" : "Ingres&aacute; tu nombre."),
+  name: (value) => (value.trim() ? "" : "Ingresá tu nombre."),
   email: (value) => {
     if (!value.trim()) {
-      return "Ingres&aacute; tu email.";
+      return "Ingresá tu email.";
     }
 
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
       ? ""
-      : "Ingres&aacute; un email v&aacute;lido.";
+      : "Ingresá un email válido.";
   },
-  message: (value) => (value.trim() ? "" : "Escrib&iacute; un mensaje."),
+  message: (value) => (value.trim() ? "" : "Escribí un mensaje."),
 };
 
 const setFieldState = (field, message) => {
@@ -120,8 +120,10 @@ const setFieldState = (field, message) => {
   field.classList.toggle("is-valid", !hasError && Boolean(field.value.trim()));
   field.setAttribute("aria-invalid", String(hasError));
 
+  // textContent, no innerHTML: los mensajes son texto plano y así el nodo no
+  // queda como sink de HTML si alguna vez incluyen datos del usuario.
   if (error) {
-    error.innerHTML = message;
+    error.textContent = message;
   }
 };
 
@@ -365,11 +367,34 @@ if (typewriterEl && !prefersReducedMotion) {
 
 const filterBtns = document.querySelectorAll(".filter-btn");
 const projectCards = document.querySelectorAll(".project-card");
+const projectEmpty = document.querySelector("#project-empty");
+
+const getCardTags = (card) =>
+  (card.dataset.tags || "").split(/\s+/).filter(Boolean);
 
 if (filterBtns.length && projectCards.length) {
+  const applyFilter = (filter) => {
+    let visibleCount = 0;
+
+    projectCards.forEach((card) => {
+      // includes sobre el array de tokens, no sobre el string completo:
+      // con substring, el filtro "web" tambien matchearia un tag "webpack".
+      const matches = filter === "all" || getCardTags(card).includes(filter);
+
+      card.classList.toggle("is-hidden", !matches);
+
+      if (matches) {
+        visibleCount += 1;
+      }
+    });
+
+    if (projectEmpty) {
+      projectEmpty.hidden = visibleCount > 0;
+    }
+  };
+
   filterBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      // 1. Marcar botón activo
       filterBtns.forEach((b) => {
         b.classList.remove("is-active");
         b.setAttribute("aria-pressed", "false");
@@ -377,19 +402,7 @@ if (filterBtns.length && projectCards.length) {
       btn.classList.add("is-active");
       btn.setAttribute("aria-pressed", "true");
 
-      const filter = btn.dataset.filter;
-
-      // 2. Mostrar u ocultar tarjetas según el filtro
-      projectCards.forEach((card) => {
-        const tags = card.dataset.tags || "";
-        const matches = filter === "all" || tags.includes(filter);
-
-        if (matches) {
-          card.classList.remove("is-hidden");
-        } else {
-          card.classList.add("is-hidden");
-        }
-      });
+      applyFilter(btn.dataset.filter);
     });
   });
 }
