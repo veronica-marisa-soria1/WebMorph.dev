@@ -78,6 +78,22 @@ const CONTACT_ENDPOINT = "https://formspree.io/f/TU-ID";
 Con la constante cargada, el formulario hace `POST` con JSON y maneja los
 errores de red y las respuestas no-2xx. Sin ella, usa el fallback `mailto:`.
 
+## Analítica de visitas
+
+El sitio es estático y no tiene backend, así que **no puede contar visitas por
+sí solo**: hace falta un servicio externo que guarde el número.
+
+Está preparado para [GoatCounter](https://www.goatcounter.com) (gratuito para
+uso personal), pero **desactivado**: el snippet está comentado al final de
+`index.html`. Para activarlo hay que crear la cuenta, copiar el snippet que
+GoatCounter entrega y descomentarlo.
+
+Es analítica privada: los visitantes no ven ningún contador. Los números se
+consultan desde el panel de GoatCounter.
+
+> Los datos los procesa GoatCounter, no este sitio. Conviene revisar su política
+> de privacidad antes de activarlo y evaluar si hace falta algún aviso.
+
 ## Deploy en GitHub Pages
 
 ```bash
@@ -96,6 +112,7 @@ La URL queda en `https://veronica-marisa-soria1.github.io/WebMorph.dev/`.
 
 - [ ] Publicar en GitHub Pages
 - [ ] Conectar el formulario a un endpoint real (`CONTACT_ENDPOINT`)
+- [ ] Activar la analítica de GoatCounter (snippet comentado en `index.html`)
 - [ ] Reemplazar los "Demo pendiente" / "Código pendiente" de los proyectos por links reales
 - [ ] Agregar `assets/cv.pdf` y enlazarlo desde el botón "Solicitar CV"
 - [ ] Actualizar `<lastmod>` en `sitemap.xml` tras cada cambio importante
